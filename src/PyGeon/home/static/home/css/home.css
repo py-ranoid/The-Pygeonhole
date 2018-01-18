@@ -1,0 +1,358 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-font-smoothing: antialiased;
+        -o-font-smoothing: antialiased;
+        font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+}
+
+body {
+        font-family: "Roboto", Helvetica, Arial, sans-serif;
+        font-weight: 100;
+        font-size: 14px;
+        line-height: 30px;
+        color: #888;
+        background: #82d41a;
+}
+
+.container {
+        max-width: 600px;
+        height: 100%;
+        width: 80%;
+        margin: 0 auto;
+        position: relative;
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="tel"],
+#contact input[type="url"],
+#contact input[type="date"],
+#contact input[type="time"],
+#contact textarea,
+#contact button[type="submit"] {
+        font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
+}
+
+#contact {
+        background: #F0F0F0;
+        padding: 25px;
+        margin: 150px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#contact h3 {
+        display: block;
+        font-size: 30px;
+        font-weight: 300;
+        margin-bottom: 10px;
+}
+
+#contact h4 {
+        margin: 2px 0 8px;
+        display: block;
+        font-size: 18px;
+        font-weight: 400;
+}
+
+fieldset {
+        border: medium none !important;
+        margin: 0 0 10px;
+        min-width: 100%;
+        padding: 0;
+        width: 100%;
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="tel"],
+#contact input[type="url"],
+#contact textarea {
+        width: 100%;
+        border: 1px solid #ccc;
+        background: #FFF;
+        margin: 0 0 5px;
+        padding: 10px;
+        font-size: 14px;
+        border-color: #82d41a;
+        border-width: thin;
+}
+
+#contact input[type="text"]:hover,
+#contact input[type="email"]:hover,
+#contact input[type="tel"]:hover,
+#contact input[type="url"]:hover,
+#contact textarea:hover {
+        -webkit-transition: border-color 0.3s ease-in-out;
+        -moz-transition: border-color 0.3s ease-in-out;
+        transition: border-color 0.3s ease-in-out;
+        border: 1px solid #aaa;
+}
+
+#contact textarea {
+        height: 100px;
+        max-width: 100%;
+        resize: none;
+}
+
+#contact button[type="submit"] {
+        cursor: pointer;
+        width: 100%;
+        border: none;
+        background: #4CAF50;
+        color: #FFF;
+        margin: 0 0 5px;
+        padding: 10px;
+        font-size: 15px;
+}
+
+#contact button[type="submit"]:hover {
+        background: #43A047;
+        -webkit-transition: background 0.3s ease-in-out;
+        -moz-transition: background 0.3s ease-in-out;
+        transition: background-color 0.3s ease-in-out;
+}
+
+#contact button[type="submit"]:active {
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.copyright {
+        text-align: center;
+}
+
+#contact input:focus,
+#contact textarea:focus {
+        outline: 0;
+        border: 1px solid #aaa;
+}
+
+::-webkit-input-placeholder {
+        color: #888;
+}
+
+:-moz-placeholder {
+        color: #888;
+}
+
+::-moz-placeholder {
+        color: #888;
+}
+
+:-ms-input-placeholder {
+        color: #888;
+}
+
+@keyframes click-wave {
+        0% {
+                height: 10px;
+                width: 10px;
+                opacity: 0.35;
+                position: relative;
+        }
+        100% {
+                height: 50px;
+                width: 50px;
+                margin-left: -15px;
+                margin-top: -15px;
+                opacity: 0;
+        }
+}
+
+.option-input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        position: relative;
+        top: 3.33333px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        transition: all 0.15s ease-out 0s;
+        background: #cbd1d8;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        margin-right: 0.5rem;
+        outline: none;
+        position: relative;
+        z-index: 1000;
+}
+
+.option-input:hover {
+        background: #9faab7;
+}
+
+.option-input:checked {
+        background: #82d41a;
+}
+
+.option-input:checked::before {}
+
+.option-input:checked::after {
+        -webkit-animation: click-wave 0.65s;
+        -moz-animation: click-wave 0.65s;
+        animation: click-wave 0.65s;
+        background: #82d41a;
+        content: '';
+        display: block;
+        position: relative;
+        z-index: 100;
+}
+
+.option-input.radio {
+        border-radius: 50%;
+}
+
+.option-input.radio::after {
+        border-radius: 50%;
+}
+
+@import url("//fonts.googleapis.com/css?family=Economica");
+.odometer.odometer-auto-theme, .odometer.odometer-theme-train-station {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  position: relative;
+}
+.odometer.odometer-auto-theme, .odometer.odometer-theme-train-station {
+  *display: inline;
+}
+.odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-train-station .odometer-digit {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  position: relative;
+}
+.odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-train-station .odometer-digit {
+  *display: inline;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-train-station .odometer-digit .odometer-digit-spacer {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  visibility: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-train-station .odometer-digit .odometer-digit-spacer {
+  *display: inline;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-train-station .odometer-digit .odometer-digit-inner {
+  text-align: left;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon, .odometer.odometer-theme-train-station .odometer-digit .odometer-ribbon {
+  display: block;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner, .odometer.odometer-theme-train-station .odometer-digit .odometer-ribbon-inner {
+  display: block;
+  -webkit-backface-visibility: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value, .odometer.odometer-theme-train-station .odometer-digit .odometer-value {
+  display: block;
+  -webkit-transform: translateZ(0);
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value.odometer-last-value, .odometer.odometer-theme-train-station .odometer-digit .odometer-value.odometer-last-value {
+  position: absolute;
+}
+.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner, .odometer.odometer-theme-train-station.odometer-animating-up .odometer-ribbon-inner {
+  -webkit-transition: -webkit-transform 2s;
+  -moz-transition: -moz-transform 2s;
+  -ms-transition: -ms-transform 2s;
+  -o-transition: -o-transform 2s;
+  transition: transform 2s;
+}
+.odometer.odometer-auto-theme.odometer-animating-up.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-train-station.odometer-animating-up.odometer-animating .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner, .odometer.odometer-theme-train-station.odometer-animating-down .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-train-station.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+  -webkit-transition: -webkit-transform 2s;
+  -moz-transition: -moz-transform 2s;
+  -ms-transition: -ms-transform 2s;
+  -o-transition: -o-transform 2s;
+  transition: transform 2s;
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.odometer.odometer-auto-theme, .odometer.odometer-theme-train-station {
+  font-family: "Economica", sans-serif;
+}
+.odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-train-station .odometer-digit {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  -moz-border-radius: 0.1em;
+  -webkit-border-radius: 0.1em;
+  -o-border-radius: 0.1em;
+  -ms-border-radius: 0.1em;
+  -khtml-border-radius: 0.1em;
+  border-radius: 0.1em;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #111111), color-stop(35%, #111111), color-stop(55%, #333333), color-stop(55%, #111111), color-stop(100%, #111111));
+  background-image: -webkit-linear-gradient(top, #111111 0%, #111111 35%, #333333 55%, #111111 55%, #111111 100%);
+  background-image: -moz-linear-gradient(top, #111111 0%, #111111 35%, #333333 55%, #111111 55%, #111111 100%);
+  background-image: -o-linear-gradient(top, #111111 0%, #111111 35%, #333333 55%, #111111 55%, #111111 100%);
+  background-image: -ms-linear-gradient(top, #111111 0%, #111111 35%, #333333 55%, #111111 55%, #111111 100%);
+  background-image: linear-gradient(top, #111111 0%, #111111 35%, #333333 55%, #111111 55%, #111111 100%);
+  background-color: #222222;
+  padding: 0 0.15em;
+  color: white;
+}
+.odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-train-station .odometer-digit {
+  *display: inline;
+}
+.odometer.odometer-auto-theme .odometer-digit + .odometer-digit, .odometer.odometer-theme-train-station .odometer-digit + .odometer-digit {
+  margin-left: 0.1em;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-train-station .odometer-digit .odometer-digit-inner {
+  left: 0.15em;
+}
+.odometer {
+        font-size: 40px;
+}
+
+.mainCont {
+        height: 100%;
+        width: 40%;
+        background-color: white;
+        margin: auto;
+        padding-top: 16px;
+}

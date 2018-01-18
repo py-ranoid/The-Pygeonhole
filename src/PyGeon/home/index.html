@@ -1,0 +1,78 @@
+<html>
+<head>
+        <!-- Extra styles for this example -->
+        {% load static %}
+        <link rel="stylesheet" href="{% static "home/css/home.css" %}" type="text/css">
+        {% load static %}
+        <script type="text/javascript" src="{% static "home/js/home.js" %}"></script>
+</head>
+<body>
+        <script type="text/javascript">
+                setTimeout(function(){
+                    odometer.innerHTML = {{ evcount }};
+                }, 100);
+        </script>
+        <div class="mainCont" id="upperpane">
+                {% load static %}
+                <img src="{% static "home/img/Logo.jpg" %}" style="padding-top:8px;    height:128px;width:128px;margin:auto;display:block;"/>
+                <p style="text-align:center;padding:12px;margin-top:24px;">Ever had too may events to keep track of?</br> Ever had an <b>Existensial Crisis</b> owing to the fact that you forgot to apply for a Hackathon and missed all that shwaaaag?</br> Ever wished you could find all these events in one place such that they were easy to find and you could even get <b>automated alerts</b> of any such upcoming event?</br> Fear not. </br> <b>#FOMOTherapy</b> is here.</p>
+                <h3 style="text-align:center; margin-top:56px;">Find our interactive chatbot here: <a href="https://www.facebook.com/pygeonbot/">Pygeon</a></h3>
+                <h3 style="text-align:center;">Add events here: <a href="#regis">Event Registration</a></h3>
+                <h3 style="text-align:center;">Signup for the closed Beta: <a href="https://docs.google.com/forms/d/e/1FAIpQLSfXbL8IFtFzpk2lI3X6WbpQ4YX9gqekpdbx-SvjdqEIPAaBug/viewform">Beta Registration</a></h3>
+                <h3 style="text-align:center;">Give us Feedback!: <a href="#feedback">Feedback</a></h3>
+                </br>
+                <h3 style="text-align:center;"><a href="#lowerpane">Search Events</a></h3>
+        </div>
+        <div class="mainCont" id="lowerpane" style="width:100%;background-color:#82d41a;padding-top: 8px;">
+                <form id="contact" action="/frontline/all/" method="get"> {% csrf_token %}
+                        <fieldset>
+                                <h1 style="text-align:center;"> Here you can view events: </h1>
+                                <h5> Select the Type of Event *</h5>
+                                <select id="typEv" name="type" size=1 onclick="some()" tabindex="1">
+                                        <option value="1001">Hackathon</option>
+                                        <option value="1002">Developer Meetup</option>
+                                        <option value="1003">Tech Fest</option>
+                                        <option value="ALL">All Events</option>
+                                </select>
+                                <h5> Select the city to search in *</h5>
+                                <select id="addc" name="city" size=1 tabindex="2">
+                                      <option value="CHE">Chennai</option>
+                                      <option value="MUM">Mumbai</option>
+                                      <option value="BAN">Bangalore</option>
+                                      <option value="DEL">Delhi</option>
+                                      <option value="HYD">Hyderabad</option>
+                                      <option value="KOL">Kolkata</option>
+                                      <option value="GUR">Gurgaon</option>
+                                      <option value="PUN">Pune</option>
+                                      <option value="ALL">All</option>
+                                  </select>
+                                <h5>From: *</h5>
+                                <input placeholder="From when" type="date" tabindex="3" required name="start_date">
+                                <h5>To: </h5>
+                                <input placeholder="Till when" type="date" tabindex="4" required name="end_date">
+                                <button name="submit" type="submit" id="contact-submit" data-submit="...Sending" tabindex="5" style="margin-top:12px;width:33%;margin:auto;display:block;">Submit</button>
+                                <h5 style="text-align:center;"><a style="text-decoration:none;" href="#upperpane">Back to the top</a></h5>
+                        </fieldset>
+                </form>
+        </div>
+        <div id="feedback" style="height:100%;width:50%;margin:auto;">
+                <form style="background:white;" action="/home/feedback/" method="GET">
+                        <h1 style="padding:16px;text-align:center;">Feedback. How can we do better?</h1>
+                        <fieldset style="padding:24px;">
+                                <h3>Your Email ID:</h3>
+                                <input placeholder="Valid Email ID" type="email" name="email" tabindex="1"></input>
+                                </br>
+                                <h3 style="margin-top:24px;">Any Thoughts, Ideas, Problems you faced are welcome!</h3>
+                                <textarea placeholder="Be honest" tabindex="2" name="fbcontent" style="width:100%;height:80px;"></textarea>
+                                </br>
+                                <input style="width=25%;margin:auto;display:block;" type="submit" name="Submit"></input>
+                                <h5 style="text-align:center;"><a style="text-decoration:none;" href="#upperpane">Back to the top</a></h5>
+                        </fieldset>
+                </form>
+        </div>
+        <div id="regis" style="height:100%;width:100%">
+                <h5 style="text-align:center;"><a style="text-decoration:none;" href="#upperpane">Back to the top</a></h5>
+                <iframe  src="https://app.cavalier84.hasura-app.io/data/hack/" height="100%" width="100%"></iframe>
+        </div>
+</body>
+</html>

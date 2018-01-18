@@ -1,0 +1,222 @@
+<html>
+<head>
+        <style>
+                @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+                * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-font-smoothing: antialiased;
+                        -o-font-smoothing: antialiased;
+                        font-smoothing: antialiased;
+                        text-rendering: optimizeLegibility;
+                }
+                .det{
+                        display: inline,
+                        color: #FFF;
+                }
+
+                body {
+                        font-family: "Roboto", Helvetica, Arial, sans-serif;
+                        font-weight: 100;
+                        font-size: 14px;
+                        line-height: 30px;
+                        color: #000;
+                        background: #82d41a;
+                }
+
+                .container {
+                        width: 40%;
+                        margin: 17 auto;
+                        padding: 17;
+                        position: absolute;
+                        top: 20%;
+                        left:30%;
+                        background : #fff;
+                        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+                }
+                .det{
+                        display: inline;
+                        color: #888;
+                }
+                .key{
+                        font-weight: bold;
+                }
+
+                .rwd-table {
+                  margin: 1em 0;
+                  width: 100%;
+                  table-layout: fixed;
+                }
+                .rwd-table tr {
+                  border-top: 1px solid #ddd;
+                  border-bottom: 1px solid #ddd;
+                }
+                .rwd-table th {
+                  display: none;
+                }
+                .rwd-table td {
+                  height: 150px;
+                  display: block;
+                  overflow: hidden;
+                  text-overflow: auto;
+                  word-wrap: normal;
+                }
+                .rwd-table td:first-child {
+                  padding-top: .5em;
+                }
+                .rwd-table td:last-child {
+                  padding-bottom: .5em;
+                }
+                .rwd-table td:before {
+                  content: attr(data-th) ": ";
+                  font-weight: bold;
+                  width: 6.5em;
+                  display: inline-block;
+                }
+                @media (min-width: 480px) {
+                  .rwd-table td:before {
+                    display: none;
+                  }
+                }
+                .rwd-table th, .rwd-table td {
+                  text-align: left;
+                }
+                @media (min-width: 480px) {
+                  .rwd-table th, .rwd-table td {
+                    display: table-cell;
+                    padding: .25em .5em;
+                  }
+                  .rwd-table th:first-child, .rwd-table td:first-child {
+                    padding-left: 0;
+                  }
+                  .rwd-table th:last-child, .rwd-table td:last-child {
+                    padding-right: 0;
+                  }
+                }
+
+                body {
+                  padding: 0 2em;
+                  -webkit-font-smoothing: antialiased;
+                  text-rendering: optimizeLegibility;
+                  color: #444;
+                  background: #eee;
+                }
+
+                h1 {
+                  font-weight: normal;
+                  letter-spacing: -1px;
+                  color: #34495E;
+                }
+
+                .rwd-table {
+                  background: #82d41a;
+                  color: #fff;
+                  border-radius: .4em;
+                  overflow: hidden;
+                }
+                .rwd-table tr {
+                  border-color: #46637f;
+                }
+                .rwd-table th, .rwd-table td {
+                  margin: .5em 1em;
+                }
+                @media (min-width: 480px) {
+                  .rwd-table th, .rwd-table td {
+                    padding: 1em !important;
+                  }
+                }
+                .rwd-table th, .rwd-table td:before {
+                  color: #FFF;
+                }
+
+                .accordion {
+                    background-color: #eee;
+                    color: #444;
+                    cursor: pointer;
+                    padding: 18px;
+                    width: 100%;
+                    text-align: left;
+                    border: none;
+                    outline: none;
+                    transition: 0.4s;
+                }
+
+                /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+                .active, .accordion:hover {
+                    background-color: #ccc;
+                }
+
+                /* Style the accordion panel. Note: hidden by default */
+                .panel {
+                    padding: 0 18px;
+                    background-color: white;
+                    color: #447703;
+                    display: none;
+                }
+
+        </style>
+</head>
+</body>
+        <div>
+                {% block content %}
+                        <h2>Events</h2>
+                        <table class="rwd-table">
+                                <thead>
+                                        <tr>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Date and Time</th>
+                                                <th width="50%">Description</th>
+                                                <th>Link</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        {% for event in object_list %}
+                                                <tr>
+                                                        <td data-th="Name">{{ event.name }}</td>
+                                                        <td data-th="Address">{{ event.city }}</td>
+                                                        <td data-th="Date and Time">{{ event.date_time }}</td>
+                                                        <td data-th="Description">
+                                                                <button class="accordion">Expand</button>
+                                                                <div class="panel">
+                                                                  <div style="color:black;">{{ event.description|safe }}<div>
+                                                                </div>
+                                                        </td>
+                                                        <td data-th="Link">{{ event.link }}</td>
+                                                </tr>
+                                        {% endfor %}
+                                </tbody>
+                        </table>
+                {% endblock %}
+        </div>
+        <script>
+                var acc = document.getElementsByClassName("accordion");
+                var i;
+                for (i = 0; i < acc.length; i++) {
+                        acc[i].addEventListener("click", function()
+                                {
+                                        /* Toggle between adding and removing the "active" class,
+                                        to highlight the button that controls the panel */
+                                        this.classList.toggle("active");
+
+                                        /* Toggle between hiding and showing the active panel */
+                                        var panel = this.nextElementSibling;
+                                        if (panel.style.display === "block") {
+                                                panel.style.display = "none";
+                                        }
+                                        else {
+                                                panel.style.display = "block";
+                                        }
+                                }
+                        );
+                }
+        </script>
+</body>
+</html>
+
+<!-- Credit: https://codepen.io/geoffyuen/full/FCBEg/ -->

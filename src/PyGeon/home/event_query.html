@@ -1,0 +1,43 @@
+<!-- Odometr includes -->
+<link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-train-station.css" />
+<script src="http://github.hubspot.com/odometer/odometer.js"></script>
+
+<!-- Extra styles for this example -->
+<style>
+        .odometer {
+                font-size: 100px;
+        }
+</style>
+
+<form id="contact" action="/frontline/all/" method="post"> {% csrf_token %}
+        <h5> Select the Type of Event *</h5>
+        <select id="typEv" name="type" size=1 onclick="some()">
+                <option value="1001">Hackathon</option>
+                <option value="1002">Developer Meetup</option>
+                <option value="1003">Tech Fest</option>
+                <option value="ALL">All Events</option>
+        </select>
+        <select id="addc" name="city" size=1>
+              <option value="CHE">Chennai</option>
+              <option value="MUM">Mumbai</option>
+              <option value="BAN">Bangalore</option>
+              <option value="DEL">Delhi</option>
+              <option value="HYD">Hyderabad</option>
+              <option value="KOL">Kolkata</option>
+              <option value="GUR">Gurgaon</option>
+              <option value="PUN">Pune</option>
+              <option value="ALL">All</option>
+          </select>
+        <input placeholder="From when" type="date" tabindex="8" required name="start_date"></div>
+        <input placeholder="Till when" type="date" tabindex="8" required name="end_date"></div>
+        <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+</form>
+<h3>Event Count</h3><br />
+<div id="odometer" class="odometer">100</div>
+
+ <iframe src="https://app.cavalier84.hasura-app.io/data/hack/" height="400" width="600"></iframe>
+<script>
+setTimeout(function(){
+    odometer.innerHTML = {{ evcount}};
+}, 100);
+</script>

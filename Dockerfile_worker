@@ -1,0 +1,20 @@
+FROM python:2-stretch
+
+WORKDIR /usr/src/app
+
+# install requirements
+# this way when you build you won't need to install again
+# and since COPY is cached we don't need to wait
+
+COPY conf/requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+RUN pip install django-grappelli
+RUN pip install redis
+RUN pip install lxml
+RUN pip install django-jet
+
+COPY src /usr/src/app
+
+ENV C_FORCE_ROOT true
+
+ENTRYPOINT celery -A exp worker -l info --workdir /usr/src/app/PyGeon

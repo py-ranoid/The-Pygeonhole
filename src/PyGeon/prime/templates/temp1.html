@@ -1,0 +1,37 @@
+<html>
+  <body>
+    <h1>Results</h1>
+    <ul>
+      {% for i in results %}
+      <l1>
+        <p>{{i[0]}}:</p>
+        <p style="color:blue"><b>{{i[1]}}</b></p>
+      </l1>
+      {% endfor %}
+    </ul>
+    <h2>Call Priority Tweets</h2>
+    <ul>
+      {% for i in callPriorityTweets %}
+        <l1>
+          <a href="{{i[i.find("http"):]}}">
+            <b>{{i[:i.find(":") + 1]}}</b>
+          </a>
+            </br>
+            <p>{{i[i.find(":") + 1:i.find("http") - 1]}}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    <h2>SMS Priority Tweets</h2>
+    <ul>
+      {% for i in smsPriorityTweets %}
+      <l1>
+        <a href="{{i[i.find("http"):]}}">
+          <b>{{i[:i.find(":") + 1]}}</b>
+        </a>
+          </br>
+          <p>{{i[i.find(":") + 1:i.find("http") - 1]}}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

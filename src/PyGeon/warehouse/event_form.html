@@ -1,0 +1,337 @@
+<html>
+
+<head>
+        <style>
+                @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+                * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-font-smoothing: antialiased;
+                        -o-font-smoothing: antialiased;
+                        font-smoothing: antialiased;
+                        text-rendering: optimizeLegibility;
+                }
+
+                body {
+                        font-family: "Roboto", Helvetica, Arial, sans-serif;
+                        font-weight: 100;
+                        font-size: 14px;
+                        line-height: 30px;
+                        color: #888;
+                        background: #82d41a;
+                }
+
+                .container {
+                        max-width: 600px;
+                        width: 100%;
+                        margin: 0 auto;
+                        position: relative;
+                }
+
+                #contact input[type="text"],
+                #contact input[type="email"],
+                #contact input[type="tel"],
+                #contact input[type="url"],
+                #contact input[type="date"],
+                #contact input[type="time"],
+                #contact textarea,
+                #contact button[type="submit"] {
+                        font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
+                }
+
+                #contact {
+                        background: #F0F0F0;
+                        padding: 25px;
+                        margin: 150px 0;
+                        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+                }
+
+                #contact h3 {
+                        display: block;
+                        font-size: 30px;
+                        font-weight: 300;
+                        margin-bottom: 10px;
+                }
+
+                #contact h4 {
+                        margin: 2px 0 8px;
+                        display: block;
+                        font-size: 18px;
+                        font-weight: 400;
+                }
+
+                fieldset {
+                        border: medium none !important;
+                        margin: 0 0 10px;
+                        min-width: 100%;
+                        padding: 0;
+                        width: 100%;
+                }
+
+                #contact input[type="text"],
+                #contact input[type="email"],
+                #contact input[type="tel"],
+                #contact input[type="url"],
+                #contact textarea {
+                        width: 100%;
+                        border: 1px solid #ccc;
+                        background: #FFF;
+                        margin: 0 0 5px;
+                        padding: 10px;
+                        font-size: 14px;
+                        border-color: #82d41a;
+                        border-width: thin;
+                }
+
+                #contact input[type="text"]:hover,
+                #contact input[type="email"]:hover,
+                #contact input[type="tel"]:hover,
+                #contact input[type="url"]:hover,
+                #contact textarea:hover {
+                        -webkit-transition: border-color 0.3s ease-in-out;
+                        -moz-transition: border-color 0.3s ease-in-out;
+                        transition: border-color 0.3s ease-in-out;
+                        border: 1px solid #aaa;
+                }
+
+                #contact textarea {
+                        height: 100px;
+                        max-width: 100%;
+                        resize: none;
+                }
+
+                #contact button[type="submit"] {
+                        cursor: pointer;
+                        width: 100%;
+                        border: none;
+                        background: #4CAF50;
+                        color: #FFF;
+                        margin: 0 0 5px;
+                        padding: 10px;
+                        font-size: 15px;
+                }
+
+                #contact button[type="submit"]:hover {
+                        background: #43A047;
+                        -webkit-transition: background 0.3s ease-in-out;
+                        -moz-transition: background 0.3s ease-in-out;
+                        transition: background-color 0.3s ease-in-out;
+                }
+
+                #contact button[type="submit"]:active {
+                        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+                }
+
+                .copyright {
+                        text-align: center;
+                }
+
+                #contact input:focus,
+                #contact textarea:focus {
+                        outline: 0;
+                        border: 1px solid #aaa;
+                }
+
+                ::-webkit-input-placeholder {
+                        color: #888;
+                }
+
+                :-moz-placeholder {
+                        color: #888;
+                }
+
+                ::-moz-placeholder {
+                        color: #888;
+                }
+
+                :-ms-input-placeholder {
+                        color: #888;
+                }
+
+                @keyframes click-wave {
+                        0% {
+                                height: 10px;
+                                width: 10px;
+                                opacity: 0.35;
+                                position: relative;
+                        }
+                        100% {
+                                height: 50px;
+                                width: 50px;
+                                margin-left: -15px;
+                                margin-top: -15px;
+                                opacity: 0;
+                        }
+                }
+
+                .option-input {
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        -ms-appearance: none;
+                        -o-appearance: none;
+                        appearance: none;
+                        position: relative;
+                        top: 3.33333px;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        height: 20px;
+                        width: 20px;
+                        transition: all 0.15s ease-out 0s;
+                        background: #cbd1d8;
+                        border: none;
+                        color: #fff;
+                        cursor: pointer;
+                        display: inline-block;
+                        margin-right: 0.5rem;
+                        outline: none;
+                        position: relative;
+                        z-index: 1000;
+                }
+
+                .option-input:hover {
+                        background: #9faab7;
+                }
+
+                .option-input:checked {
+                        background: #82d41a;
+                }
+
+                .option-input:checked::before {}
+
+                .option-input:checked::after {
+                        -webkit-animation: click-wave 0.65s;
+                        -moz-animation: click-wave 0.65s;
+                        animation: click-wave 0.65s;
+                        background: #82d41a;
+                        content: '';
+                        display: block;
+                        position: relative;
+                        z-index: 100;
+                }
+
+                .option-input.radio {
+                        border-radius: 50%;
+                }
+
+                .option-input.radio::after {
+                        border-radius: 50%;
+                }
+        </style>
+        <script>
+                function onln(v) {
+                        var addf = document.getElementById("add");
+                        var addc = document.getElementById('addc');
+                        var addd = document.getElementById('addd');
+                        if (v) {
+                                addf.style.display = "none";
+                                addd.required = false;
+                                addc.required = false;
+                        } else {
+                                addf.style.display = "inline";
+                                addd.required = true;
+                                addc.required = true;
+                        }
+                }
+
+                function some() {
+                        var num = document.getElementById('typEv').value
+                        var cont = document.getElementById("content")
+                        if (num > 1000)
+                                cont.style.display = "inline"
+                        else
+                                cont.style.display = "none"
+                }
+        </script>
+</head>
+</body>
+<div class="container">
+        <form id="contact" action="" method="post"> {% csrf_token %}
+                <div style="">
+                </div>
+                <h1>Event Registration Form</h1>
+                <h4>Once you've filled the form and provided your details, we'll inform all subscribers about your new event!</h4>
+                <fieldset>
+                        <h5> Select the Type of Event *</h5>
+                        <select id="typEv" name="type" size=1 onclick="some()">
+            <option value="1001">Hackathon</option>
+            <option value="1002">Developer Meetup</option>
+            <option value="1003">Tech Fest</option>
+            <option value="1004">Academic Seminar</option>
+            <option value="1">Other</option>
+        </select>
+</fieldset>
+                <div id="content" style="display:none;">
+                        <fieldset>
+                                <input placeholder="Your Event's Name *" type="text" tabindex="1" name="name" required autofocus>
+                        </fieldset>
+                        <fieldset>
+                                <textarea placeholder="A Short Description *" type="text" tabindex="2" required name="description"></textarea>
+                        </fieldset>
+                        <fieldset>
+                                <input placeholder="Link to the Event's Website *" type="url" tabindex="3" required name="link">
+                        </fieldset>
+                        <fieldset required>
+                                <h4> Is your event online? *</h4>
+                                <input type="radio" class="option-input radio" name="online" value="True" onclick="onln(true)" required tabindex="4">Yes</input>
+                                <div style="float:right;margin-right:390">
+                                        <input type="radio" class="option-input radio" name="online" value="False" onclick="onln(false)" tabindex="5">No</input>
+                                </div>
+                                </br>
+                        </fieldset>
+                        <fieldset id="add" style="display:none;">
+                                <h5> Select the City *</h5>
+                                <select id="addc" name="city" size=1>
+                      <option value="CHE">Chennai</option>
+                      <option value="MUM">Mumbai</option>
+                      <option value="BAN">Bangalore</option>
+                      <option value="DEL">Delhi</option>
+                      <option value="HYD">Hyderabad</option>
+                      <option value="KOL">Kolkata</option>
+                      <option value="GUR">Gurgaon</option>
+                      <option value="PUN">Pune</option>
+                  </select>
+                                <br />
+                                <textarea id="addd" placeholder="Provide the address of the Venue" name="address"></textarea>
+                        </fieldset>
+                        <fieldset required>
+                                <h4> Does your event have a prize pool? *</h4>
+                                <input type="radio" name="pooppool" class="option-input radio" value="True" tabindex="6">Yes</input>
+                                <div style="float:right;margin-right:390">
+                                        <input type="radio" name="pooppool" class="option-input radio" value="False" tabindex="7">No</input>
+                                </div>
+                                </br>
+                        </fieldset>
+                        <fieldset>
+                                <h4> When will the event take place? *</h4>
+                                <div style="float:left;">
+                                        <h4> Date: </h4> <input placeholder="The exact date and time." type="date" tabindex="8" required name="date"></div>
+                                <div style="float:right;margin-right:300">
+                                        <h4> Time: </h4> <input placeholder="The exact date and time." type="time" tabindex="9" required name="time"></div>
+                        </fieldset>
+                        </br>
+                        <h1> Organiser Details </h1>
+                        <h4> These are simple details about the designated organiser of the event so that interested participants can reach them easily.
+          <fieldset>
+            </br>
+            <input type="text" name="organiser" placeholder="Organiser's Name *" required tabindex="10" style="width:160">
+            <div style="float:right">
+                    <label style="display:inline-block;font-size:14px;" for="ph">+91</label>&ensp;<input id="ph" style="width:230;" type="tel" name="organiser_phone" placeholder="Organiser's Phone Number " tabindex="11">
+            </div>
+            <input type="email" name="organiser_email" placeholder="Organiser's Email *" required tabindex="12">
+          </fieldset>
+          </br>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+          </fieldset>
+          <div style="text-align:center;font-size:12px">
+                  All the fields marked with the (*) are required and the form cannot be submitted without them!
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

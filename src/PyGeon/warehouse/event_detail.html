@@ -1,0 +1,76 @@
+<html>
+
+<head>
+        <style>
+                @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+                * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-font-smoothing: antialiased;
+                        -o-font-smoothing: antialiased;
+                        font-smoothing: antialiased;
+                        text-rendering: optimizeLegibility;
+                }
+                .det{
+                        display: inline,
+                        color: #FFF;
+                }
+
+                body {
+                        font-family: "Roboto", Helvetica, Arial, sans-serif;
+                        font-weight: 100;
+                        font-size: 14px;
+                        line-height: 30px;
+                        color: #000;
+                        background: #82d41a;
+                }
+
+                .container {
+                        width: 40%;
+                        margin: 17 auto;
+                        padding: 17;
+                        position: absolute;
+                        top: 20%;
+                        left:30%;
+                        background : #fff;
+                        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+                }
+                .det{
+                        display: inline;
+                        color: #888;
+                }
+                .key{
+                        font-weight: bold;
+                }
+        </style>
+</head>
+</body>
+<div class="container">
+                {% if i.name %}
+                <div style="font-size:30px">
+                        <div class="det value" display="inline">{{i.name}}</div>
+                </div>
+                {% endif %}
+                <br />
+                {% if i.organiser %}
+                <div class="det key">Organised by </div>
+                <div class="det value">{{i.organiser}}</div>
+                <br />
+                {% endif %}
+                <br />
+                <hr style="margin-left:10%;margin-right:10%"/>
+                <br />
+                {% if i.description %}
+                <div class="det value">{{i.description|safe}}</div>
+                <br />
+                <
+                {% endif %}
+        </div>
+        </body>
+
+</html>

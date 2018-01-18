@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+        .article-list-vertical {
+                list-style: none;
+                margin: 0 auto;
+                width: 70%;
+                text-align: center;
+                padding: 0;
+        }
+        .error {
+                margin-top: 30%;
+                font-family: "Roboto", Helvetica, Arial, sans-serif;
+                font-style: italic;
+        }
+        .err_body{
+                height: 40%;
+                border-radius: 30px;
+                background-color: #eee;
+        }
+        .article-list-vertical li {
+                display: block;
+                box-sizing: border-box;
+                border-radius: 3px;
+                text-align: left;
+                padding: 10px;
+                box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.08);
+                border: 1px solid #cfcfcf;
+                overflow: hidden;
+                background-color: #eee;
+                font-family: "Roboto", Helvetica, Arial, sans-serif;
+                font: normal 13px;
+                margin-bottom: 40px;
+                width: 100%;
+                display: inline-flex;
+        }
+
+        .accordion {
+            transition: 0.2s;
+            background-color: #87bcd7;
+            cursor: pointer;
+            font-size: 12px;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 2px;
+            margin: 2px 0;
+            font-weight: bold;
+        }
+
+        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+
+        /* Style the accordion panel. Note: hidden by default */
+        .panel {
+            padding: 0 2px;
+            background-color: white;
+            display: none;
+            -webkit-transition: all 0.5s ease-in-out;
+            -moz-transition: all 0.5s ease-in-out;
+            -ms-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+        }
+
+
+        /* Article photo */
+        .desc_block {
+                overflow-y: scroll;
+                height:300px;
+                width: 100%;
+                -webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+-ms-transition: all 0.5s ease-in-out;
+transition: all 0.5s ease-in-out;
+
+        }
+        .article-list-vertical li>a {
+                float: left;
+                width: 200px;
+                height: 200px;
+                display: block;
+                background-size: cover;
+        }
+
+        .article-list-vertical li div {
+                float: left;
+                box-sizing: border-box;
+                padding: 10px;
+        }
+
+        /* Article title */
+
+        .article-list-vertical li div h2 {
+                font-size: 19px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin: 0;
+        }
+
+        .article-list-vertical li div h2 a {
+                color: #2b2b2b;
+                text-decoration: none;
+        }
+
+        /* Article excerpt */
+
+        .article-list-vertical li div p {
+                line-height: 20px;
+                color: #5d5d5d;
+                margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+                .article-list-vertical {
+                        max-width: 350px;
+                }
+                .article-list-vertical li {
+                        max-width: 325px;
+                }
+                .article-list-vertical li>a {
+                        float: none;
+                        width: 100%;
+                }
+                .article-list-vertical li div {
+                        float: none;
+                        padding: 10px;
+                }
+        }
+
+
+
+        /* DATETIME STUFF */
+
+        /****************************************/
+        /* Styling rules, such as font and colors */
+        .date-as-calendar {
+          font-variant: normal;
+          font-style: normal;
+          font-weight: normal;
+          font-family: "Roboto", Helvetica, Arial, sans-serif;
+
+          /* It seems vertical-align: baseline does not work correctly with display: inline-flex. */
+          vertical-align: top;
+
+          /* margin: 1ex; */
+
+          color: black;
+          background: white;
+          background: linear-gradient(to bottom right, #fff 0%, #eee 100%);
+
+          border: 1px solid #888;
+          border-radius: 3px;
+
+          box-shadow: 2px 2px 2px -2px black;
+        }
+        .date-as-calendar .weekday,
+        .date-as-calendar .day,
+        .date-as-calendar .month,
+        .date-as-calendar .year {
+          text-align: center;
+          line-height: 1;
+        }
+        .date-as-calendar .month {
+          font-family: "Roboto", Helvetica, Arial, sans-serif;
+          text-transform: uppercase;
+          background: #1b1;
+          background: linear-gradient(to bottom right, #109ada 0%, #00a 100%);
+          color: white;
+        }
+
+        /****************************************/
+        /* Layout rules using display: inline-flex and relative dimensions using em. */
+        .inline-flex.date-as-calendar {
+          display: inline-flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          justify-content: space-between;
+
+          width: 14%;
+          max-width: 14%;
+          height: 5em;
+        }
+        .inline-flex.date-as-calendar .weekday,
+        .inline-flex.date-as-calendar .day,
+        .inline-flex.date-as-calendar .month,
+        .inline-flex.date-as-calendar .year {
+          display: block;
+          flex: 1 1 auto;
+        }
+        .inline-flex.date-as-calendar .month {
+          order: 1;
+          font-size: 0.7em;
+          padding: 0.3em;
+        }
+        .inline-flex.date-as-calendar .weekday {
+          padding: 0.3em;
+          order: 2;
+          font-size: 0.6em;
+        }
+        .inline-flex.date-as-calendar .day {
+          order: 3;
+          font-size: 1.3em;
+        }
+        .inline-flex.date-as-calendar .year {
+          order: 4;
+          font-size: 0.8em;
+        }
+
+        /****************************************/
+        /* Multiple sizes. */
+        .date-as-calendar.size0_5x {
+          font-size: 8px;
+        }
+        .date-as-calendar.size0_75x {
+          font-size: 12px;
+        }
+        .date-as-calendar.size1x {
+          font-size: 16px;
+        }
+        .date-as-calendar.size1_25x {
+          font-size: 20px;
+        }
+        .date-as-calendar.size1_5x {
+          font-size: 24px;
+        }
+        .date-as-calendar.size1_75x {
+          font-size: 28px;
+        }
+        .date-as-calendar.size2x {
+          font-size: 26px;
+        }
+        .date-as-calendar.size3x {
+          font-size: 48px;
+        }
+        h5{
+                font-style: italic;
+                padding: 0;
+                line-height: 0;
+        }
+
+        </style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Event List</title>
+        {% load static %}
+        <link rel="stylesheet" href= "{% static "evlist/css/main.css" %}">
+
+</head>
+
+<body>
+
+        <ul class="article-list-vertical">
+                {% if object_list %}
+                        {% for event in object_list %}
+                        <li>
+                                <time datetime={{ event.date_time.date }} class="date-as-calendar inline-flex size2x">
+                                        <span class="weekday">{{ event.date_time|date:"l"  }}</span>
+                                        <span class="day">{{ event.date_time.day  }}</span>
+                                        <span class="month">{{ event.date_time|date:"F"  }}</span>
+                                        <span class="year">{{ event.date_time.year  }}</span>
+                                </time>
+                                <div>
+                                        <h2><a href={{ event.link }}>{{ event.name }}</a></h2>
+                                        <h4>{{ event.city }}</h4>
+                                        <button class="accordion">Read more...</button>
+
+                                        <div class="panel">
+                                                <div class="desc_block">
+                                                        {{ event.description|safe }}
+                                                </div>
+                                        </div>
+                                </div>
+                        </li>
+                        {% endfor %}
+                {% else %}
+                <div class="err_body">
+                        <h2 class="error">No events were found</h2>
+                </div>
+                {% endif%}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if object_list.has_previous %}
+                            <a href="javascript:window.location=addParameterToURL('page=1');" >&laquo; first</a>
+                            <a href="javascript:window.location=addParameterToURL('page={{ object_list.previous_page_number }}')">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                        </span>
+
+                        {% if object_list.has_next %}
+                            <a href="javascript:window.location=addParameterToURL('page={{ object_list.next_page_number }}')">next</a>
+                            <a href="javascript:window.location=addParameterToURL('page={{ object_list.paginator.num_pages }}')">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+
+        </ul>
+        <script>
+                function addParameterToURL(param){
+                        _url = location.href;
+                        _url += '&' + param;
+                        return _url;
+                }
+                var acc = document.getElementsByClassName("accordion");
+                var i;
+                for (i = 0; i < acc.length; i++) {
+                        acc[i].addEventListener("click", function() {
+                                /* Toggle between adding and removing the "active" class,
+                                to highlight the button that controls the panel */
+                                this.classList.toggle("active");
+                                /* Toggle between hiding and showing the active panel */
+                                var panel = this.nextElementSibling;
+                                if (panel.style.display === "block") {
+                                        panel.style.display = "none";
+                                        this.textContent = "Read More"
+                                } else {
+                                        panel.style.display = "block";
+                                        this.textContent = "Read Less"
+                                }
+                        });
+                }
+        </script>
+</body>
+
+
+</html>
