@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views import generic
 from warehouse.firebasic import query
 from dateutil import parser
+import urllib
 # Create your views here.
 
 
@@ -37,8 +38,9 @@ class EventListView(generic.View):
         end = parser.parse(str(params.get('end_date', None)))
         q = q.filter(date_time__gte=start, date_time__lte=end)
         print len(q)
-        paginator = Paginator(q, 15)
+        paginator = Paginator(q, lim)
         queryset = paginator.page(page)
-        return render(request, 'frontline/event_list.html', {'object_list': queryset})
+        page_url = request.build_absolute_uri()[:-1]
+        return render(request, 'frontline/event_list.html', {'object_list': queryset, 'city': city, 'evid': evid, 'sdate': params.get('start_date', None), 'edate': params.get('end_date', None), 'pageurl': page_url})
 
 # class EventQuery(generic.View)

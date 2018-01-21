@@ -1,8 +1,10 @@
 import requests
 import json
+import urllib
 from prime import sender
 from sentry.data import PAGE_ACCESS_TOKEN
-
+# from frontline.views import getUrl
+import urllib
 from exp.settings import TIME_ZONE
 import pytz
 home = pytz.timezone(TIME_ZONE)
@@ -11,10 +13,17 @@ DEFAULT_URL = 'https://woocommerce.com/wp-content/themes/woo/images/wc-meetups/h
 DEFAULT_BUTTON_URL = 'https://www.wikipedia.org'
 
 
-def event_presenter(sender_id=None, items=None, send=True):
+def getUrl(city=None, type=None, limit=None, startdate=None, enddate=None):
+    url = "https://app.cavalier84.hasura-app.io/frontline/all/?"
+    params = urllib.urlencode(
+        {'city': city, 'type': type, 'start_date': startdate, 'end_date': enddate, 'limit': limit})
+    return str(url + params)
+
+
+def event_presenter(sender_id=None, items=None, send=True, qparams={}):
     if len(items) == 0:
         m = sender.gen_text_message(
-            "Sorry, we could not find any data for your query")
+            "Sorry, I could not find any events for your query.\nIf I find one, I'll let you know :). \n#ThePyGeonRemembers")
         post_facebook_message(sender_id, m)
     else:
         # print items
@@ -34,8 +43,11 @@ def event_presenter(sender_id=None, items=None, send=True):
             details_dict['button_text'] = "Open"
             print ev.link
             if '.' in ev.link:
-                details_dict['url'] = ev.link
-                details_dict['button_url'] = ev.link
+                newurl = "https://app.cavalier84.hasura-app.io/shuttle/bus/?" + \
+                    str(urllib.urlencode(
+                        {"urlredirect": ev.link, "user": sender_id}))
+                details_dict['url'] = newurl
+                details_dict['button_url'] = newurl
             else:
                 details_dict['url'] = DEFAULT_BUTTON_URL
                 details_dict['button_url'] = DEFAULT_BUTTON_URL
@@ -45,7 +57,26 @@ def event_presenter(sender_id=None, items=None, send=True):
             #     details_dict['image_url'] = ev.img_url
             details_list.append(details_dict)
             print(details_dict)
+
+        if qparams and len(items) > 10:
+            qurl = getUrl(qparams['city'], qparams['evtype'], 30,
+                          qparams['start'], qparams['end'])
+            details_dict = {
+                'title': 'Find more',
+                'subtitle': 'Find more events on our website.',
+                'button_text': 'Open',
+                'url': qurl,
+                'button_url': qurl,
+            }
+            details_list = details_list[:9]
+            details_list.append(details_dict)
+        print details_list
         if send:
+            count = len(items)
+            countstr = str(count) if count <= 10 else "10+"
+            m = sender.gen_text_message(
+                countstr + " events in the upcoming month.")
+            post_facebook_message(sender_id, m)
             m = sender.gen_link_cards(details_list)
             post_facebook_message(sender_id, m)
         else:

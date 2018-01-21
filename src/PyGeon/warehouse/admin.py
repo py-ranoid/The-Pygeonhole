@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib import admin
-from models import Event, Cities, EventType, Subscriber
+from models import Event, Cities, EventType, Subscriber, Log
 from django.db.models import F
 from sentry.broadcasting import fire
 
@@ -55,6 +55,12 @@ class EventAdmin2(admin.ModelAdmin):
     ordering = ['priority', 'event_type', 'date_time']
     list_filter = ['priority', 'event_type', 'city']
     actions = []
+
+
+class LogAdmin(admin.ModelAdmin):
+    list_display = ['fbid', 'log_type', 'value', 'log_time']
+    ordering = ['log_time']
+    list_filter = ['fbid', 'log_type', 'value', 'log_time']
 # Register your models here.
 # Register your models here.
 
@@ -64,3 +70,4 @@ admin.site.register(Event, EventAdmin)
 # admin.site.register(Event, EventAdmin2)
 admin.site.register(Cities)
 admin.site.register(EventType)
+admin.site.register(Log, LogAdmin)

@@ -54,14 +54,12 @@ types = {
     },
     1002: {
         "type_id": 1002,
-        "type_name": "Developer Meetup"
+        "type_name": "Dev. Meet"
     },
     1003: {
         "type_id": 1003,
         "type_name": "CP Contest"
-    },
-    1004: {
-        "type_id": 1004,
-        "type_name": "Seminar"
     }
 }
+
+# Note : If you change event name, add to eventmap in prime.views

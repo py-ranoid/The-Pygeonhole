@@ -23,7 +23,7 @@ def send(subject='Wasssup', text='## Bingo'):
 def send_simple_message(subject="Your Pygeon has arrived", body="Congratulations Vishal, you just sent an email with Mailgun!  You are truly awesome!", to="Vishal <vishstar88@gmail.com>"):
     return requests.post(
         "https://api.mailgun.net/v3/sandbox37bd14349c8749d8a9b7dec8d8996261.mailgun.org/messages",
-        auth=("api", MAILGUNKEY),
+        auth=("api", MAILGUN_KEY),
         data={"from": "Pygeon master <vishalg8897@gmail.com>",
               "to": to,
               "subject": subject,

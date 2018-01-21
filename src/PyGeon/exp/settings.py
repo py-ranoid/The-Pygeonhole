@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'prime',
     'sentry',
     'TDS',
+    'shuttle',
     'home',
     'django_celery_beat',
     #    'gobot'

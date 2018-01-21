@@ -285,11 +285,11 @@ transition: all 0.5s ease-in-out;
                         <h2 class="error">No events were found</h2>
                 </div>
                 {% endif%}
-                <div class="pagination">
+                <form class="pagination" action="/frontline/all/" method="GET"> {% csrf_token %}
                     <span class="step-links">
                         {% if object_list.has_previous %}
-                            <a href="javascript:window.location=addParameterToURL('page=1');" >&laquo; first</a>
-                            <a href="javascript:window.location=addParameterToURL('page={{ object_list.previous_page_number }}')">previous</a>
+                            <a class="pagehelp" href="{{ pageurl }}1">&laquo; first</a>
+                            <a class="pagehelp" href="{{ pageurl }}{{ object_list.previous_page_number }}">previous</a>
                         {% endif %}
 
                         <span class="current">
@@ -297,21 +297,17 @@ transition: all 0.5s ease-in-out;
                         </span>
 
                         {% if object_list.has_next %}
-                            <a href="javascript:window.location=addParameterToURL('page={{ object_list.next_page_number }}')">next</a>
-                            <a href="javascript:window.location=addParameterToURL('page={{ object_list.paginator.num_pages }}')">last &raquo;</a>
+                            <a class="pagehelp" href="{{ pageurl }}{{ object_list.next_page_number }}">next</a>
+                            <a class="pagehelp" href="{{ pageurl }}{{ object_list.paginator.num_pages }}"``>last &raquo;</a>
                         {% endif %}
                     </span>
-                </div>
-
+                </form>
         </ul>
         <script>
-                function addParameterToURL(param){
-                        _url = location.href;
-                        _url += '&' + param;
-                        return _url;
-                }
                 var acc = document.getElementsByClassName("accordion");
+
                 var i;
+
                 for (i = 0; i < acc.length; i++) {
                         acc[i].addEventListener("click", function() {
                                 /* Toggle between adding and removing the "active" class,
@@ -328,6 +324,7 @@ transition: all 0.5s ease-in-out;
                                 }
                         });
                 }
+
         </script>
 </body>
 

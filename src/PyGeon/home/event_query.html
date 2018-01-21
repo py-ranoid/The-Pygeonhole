@@ -9,7 +9,7 @@
         }
 </style>
 
-<form id="contact" action="/frontline/all/" method="post"> {% csrf_token %}
+<form id="contact" action="/frontline/all/" method="get"> {% csrf_token %}
         <h5> Select the Type of Event *</h5>
         <select id="typEv" name="type" size=1 onclick="some()">
                 <option value="1001">Hackathon</option>
@@ -32,6 +32,7 @@
         <input placeholder="Till when" type="date" tabindex="8" required name="end_date"></div>
         <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
 </form>
+
 <h3>Event Count</h3><br />
 <div id="odometer" class="odometer">100</div>
 

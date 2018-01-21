@@ -25,6 +25,7 @@ from home.views import Hello, feedReceive
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^app/', include('prime.urls')),
+    url(r'^shuttle/', include('shuttle.urls')),
     url(r'^data/', include('warehouse.urls')),
     url(r'^grappelli/', include('grappelli.urls')),
     # url(r'^grap/', dashboard,

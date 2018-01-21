@@ -68,6 +68,14 @@ class Subscriber(models.Model):
         Cities, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
 
+class Log(models.Model):
+    fbid = models.BigIntegerField()
+    log_type = models.CharField(max_length=10)
+    value = models.TextField(blank=False)
+    log_time = models.DateTimeField(auto_now_add=True)
+    user2bot = models.IntegerField(blank=False, default=1)
+
+
 def loadCities():
     print "Loading cities:"
     for i in cities:

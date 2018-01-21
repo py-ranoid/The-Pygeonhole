@@ -3,6 +3,7 @@ import json
 import time
 from datetime import datetime, timedelta
 from warehouse.models import *
+
 from sentry.broadcasting import get_label_details, getLabelsOfUser, unsubopt_message, rev_labmap, unsubopt_message_long, add_sub2broad
 
 from prime import sender
@@ -20,10 +21,18 @@ SUBA_COLLECTION = 'SubAttractions'
 
 def sublist(fbid):
     unsub_list = []
+    userLabels = getLabelsOfUser(fbid)
+    if userLabels == False:
+        return
+    if len(userLabels) == 0:
+        message = "You do not have any subscriptions yet."
+        m = sender.opt_select(message, ['Subscribe to more events'])
+        post_facebook_message(fbid, m)
+        return
     message = "You have subscribed to ..."
     m = sender.gen_text_message(message)
     post_facebook_message(fbid, m)
-    for l in getLabelsOfUser(fbid):
+    for l in userLabels:
         print l['id']
         evid, cityid = get_label_details(rev_labmap[l['id']])
         unsub_list.append((evid, cityid))
@@ -414,6 +423,20 @@ def query(event=None, cid=None, dt_start=None, dt_end=None):
         evs = Event.objects.filter(event_type=event).filter(
             city_id=cid).filter(date_time__gte=dt_start, date_time__lte=dt_end).extra(order_by=["date_time"])
     return evs
+
+
+def getEvCount(evid, citid=None):
+    dt_start = datetime.datetime.now()
+    dt_start = home.localize(dt_start)
+    if citid == None:
+        return Event.objects.filter(event_type=evid).filter(date_time__gte=dt_start).count()
+    else:
+        return Event.objects.filter(event_type=evid, city=citid).filter(date_time__gte=dt_start).count()
+
+
+def addLog(fbid=0, log_type="Text", value="WubbaLubbaDubDub", u2bot=1):
+    l = Log(fbid=fbid, log_type=log_type, value=value, user2bot=u2bot)
+    l.save()
 #     if not dt_end is None and epoch_end is None:
 #         epoch_end = (dt_end - datetime(1970, 1, 1, 0, 0)).total_seconds()
 #     if category is None and not event is None:

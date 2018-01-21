@@ -154,7 +154,10 @@ def associateUserToLabel(lid=None, upsid=None):
 
 def humanize(cityid, evid):
     evname = types[int(evid)]['type_name']
-    citname = cities[cityid]['city_name']
+    try:
+        citname = cities[cityid]['city_name']
+    except:
+        citname = cityid
     if citname == "Online":
         message = "online " + evname + "s"
     else:
@@ -295,11 +298,12 @@ def gen_labmap():
 
 
 def killAllLabels(label_results=None):
-    if label_results == None:
-        label_results = getLabels()
-    for i in label_results:
-        print "Killing", i['name']
-        killLabel(i['id'])
+    print "ALERT ALERT"
+    # if label_results == None:
+    #     label_results = getLabels()
+    # for i in label_results:
+    #     print "Killing", i['name']
+    #     killLabel(i['id'])
 
 
 def store_labmap(label_results=None):

@@ -11,13 +11,12 @@ from django.http.response import HttpResponse
 import os
 import binascii
 from sentry.broadcasting import unsub
-from warehouse.data import cities
+from warehouse.data import cities, types
 from prime import sender
 from pprint import pprint
 from django.views.decorators.csrf import csrf_exempt
-from warehouse.firebasic import add_subscriber_combined, query, add_event, sublist
+from warehouse.firebasic import add_subscriber_combined, query, add_event, sublist, getEvCount, addLog
 from watson import watson_handler
-import pandas as pd
 import datetime
 import pytz
 from exp.settings import TIME_ZONE
@@ -55,8 +54,13 @@ def init(fbid):
 
 
 def sub_init(fbid):
-    optlist = ["Hackathons", "Developer Meets", "CP Contests"]
-    payloadlist = ["SEL2::" + i + "::" + "Technology" for i in optlist]
+    optlist = []
+    payloadlist = []
+    for evid in types:
+        evname = types[evid]['type_name']
+        title = evname + 's (' + str(getEvCount(evid)) + ')'
+        optlist.append(title)
+        payloadlist.append("SEL2::" + evname + "::" + "Technology")
     m = sender.gen_button_card(
         "What would you like to subscribe to ?", optlist, payloadlist)
     # m = sender.gen_cards(template_list)
@@ -88,6 +92,8 @@ def city_prompt_temp(fbid, category, event):
             tt, subtt = c['city_name'], "Subscribe to " + \
                 event + " in " + c['city_name']
             btext = event + " in " + c['city_name']
+        ec = str(getEvCount(eventmap[event], cid))
+        tt += ' (' + ec + ')'
         details.append({
             'title': tt,
             'subtitle': subtt,
@@ -106,7 +112,17 @@ def cityless_proc_temp(fbid, params):
     t_start = datetime.datetime.now()
     t_end = t_start + datetime.timedelta(days=30)
     items = query(evid, None, t_start, t_end)
-    event_presenter(fbid, items)
+    qparams = {
+        'city': 'NUL',
+        'evtype': evid,
+        'start': t_start,
+        'end': t_end
+    }
+    event_presenter(sender_id=fbid,
+                    items=items,
+                    send=True,
+                    qparams=qparams
+                    )
 
 
 def city_proc_temp(fbid, params):
@@ -120,7 +136,17 @@ def city_proc_temp(fbid, params):
     t_end = t_start + datetime.timedelta(days=30)
     # event_list = query(event, city, epoch_end)
     items = query(evid, cityid, t_start, t_end)
-    event_presenter(fbid, items)
+    qparams = {
+        'city': cityid,
+        'evtype': evid,
+        'start': t_start,
+        'end': t_end
+    }
+    event_presenter(sender_id=fbid,
+                    items=items,
+                    send=True,
+                    qparams=qparams
+                    )
 
 
 # def city_proc(fbid, message="Chennai, Mumbai and Bangalore"):
@@ -181,6 +207,7 @@ def payloadprocessor(name, fbid):
          pname = Payload tag
          add = Payload
     """
+    addLog(fbid, "PAYLOAD", name, 1)
     if name == "GET_STARTED_PAYLOAD":
         init(fbid)
         return
@@ -225,48 +252,30 @@ def df_check(fbid):
 
 eventmap = {'Developer Meets': 1002,
             'meetups': 1002,
+            "Dev. Meet": 1002,
+            "Dev. Meets": 1002,
             'hackathon': 1001,
             'Hackathons': 1001,
+            'Hackathon': 1001,
             'CP Contests': 1003,
+            'CP Contest': 1003,
             'contests': 1003,
             'event': 1001}
 
-
-# def event_presenter(sender_id=None, items=None, send=True):
-#     if len(items) == 0:
-#         m = sender.gen_text_message(
-#             "Sorry, we could not find any data for your query")
-#         post_facebook_message(sender_id, m)
-#     else:
-#         # print items
-#         details_list = []
-#         for ev in items[:10]:
-#             details_dict = {}
-#             details_dict['title'] = ev.name
-#             details_dict['image_url'] = DEFAULT_URL
-#             details_dict['subtitle'] = "Starts :" + \
-#                 ev.date_time.strftime("%Y-%m-%d %H:%M:%S") + \
-#                 '\nBy : ' + ev.organiser
-#             details_dict['button_text'] = "Open"
-#             if '.' in ev.link:
-#                 details_dict['url'] = ev.link
-#                 details_dict['button_url'] = ev.link
-#             else:
-#                 details_dict['url'] = DEFAULT_BUTTON_URL
-#                 details_dict['button_url'] = DEFAULT_BUTTON_URL
-#             details_list.append(details_dict)
-#             print(details_dict)
-#         if send:
-#             m = sender.gen_link_cards(details_list)
-#             post_facebook_message(sender_id, m)
-#         else:
-#             return details_list
 
 def helpdesk(fbid):
     message = "How can I help you ?"
     options = ["Get Started", "My Subscriptions", "Find Events"]
     payloads = ["HELP::INIT", "HELP::SUB", "HELP::SEARCH"]
     m = sender.gen_button_card(message, options, payloads)
+    post_facebook_message(fbid, m)
+
+
+def repolink(fbid):
+    text = "Intrigued, much ?\nYou can view our source code here"
+    optlist = ['Github Repo']
+    linklist = ['https://github.com/py-ranoid/The-Pygeonhole']
+    m = sender.gen_button_card(text, optlist, linklist, button_type='Links')
     post_facebook_message(fbid, m)
 
 
@@ -283,23 +292,37 @@ def feedback(fbid):
 
 
 def whattodo(sender_id, message):
+    addLog(sender_id, "TEXT", message, 1)
     res = pred(message, sender_id)
     print res
     if not res['more']:
-        if res['action'] == 'Sub_init':
+        if res['action'] == 'smalltalk.greetings.hello' or 'get started' in message.lower():
+            init(sender_id)
+            addLog(sender_id, "ACTION", "INIT", 0)
+            return
+        elif 'source code' in message.lower() or 'contrib' in message.lower():
+            repolink(sender_id)
+            addLog(sender_id, "ACTION", "REPOLINK", 0)
+            return
+        elif res['action'] == 'Sub_init':
             sub_init(sender_id)
+            addLog(sender_id, "ACTION", "SUB_INIT", 0)
+            return
+        elif res['action'] == 'Sub_list':
+            sublist(sender_id)
+            addLog(sender_id, "ACTION", "SUB_LIST", 0)
             return
         elif res['action'] in {'smalltalk.appraisal.bad', 'smalltalk.confirmation.no', 'smalltalk.agent.bad'}:
             feedback(sender_id)
-            return
-        elif res['action'] == 'smalltalk.greetings.hello':
-            init(sender_id)
+            addLog(sender_id, "ACTION", "FEEDBACK", 0)
             return
         elif res['action'] == 'smalltalk.agent.can_you_help':
             helpdesk(sender_id)
+            addLog(sender_id, "ACTION", "HELPDESK", 0)
             return
         elif not res['action'] == 'Event_found':
             m = sender.gen_text_message(res['reply'])
+            addLog(sender_id, "TEXT", res['reply'], 0)
             post_facebook_message(sender_id, m)
             return
         else:
@@ -322,7 +345,18 @@ def whattodo(sender_id, message):
                         # print str(c) + ":::" + str(e) + ":::" + str(t_start) + ":::" + str(t_end)
                         items = query(
                             eventmap[e], c[:3].upper(), t_start, t_end)
-                        event_presenter(sender_id, items)
+                        addLog(sender_id, "ACTION", "QUERY::" + text, 0)
+                        qparams = {
+                            'city': c[:3].upper(),
+                            'evtype': eventmap[e],
+                            'start': t_start,
+                            'end': t_end
+                        }
+                        event_presenter(sender_id=sender_id,
+                                        items=items,
+                                        send=True,
+                                        qparams=qparams
+                                        )
                     else:
                         dates = time_block['dates']
                         for d in dates:
@@ -334,12 +368,36 @@ def whattodo(sender_id, message):
 
                             t_start = d
                             t_end = t_start + datetime.timedelta(days=1)
-                            items = query(
-                                eventmap[e], c[:3].upper(), t_start, t_end)
-                            event_presenter(sender_id, items)
-
+                            evid = eventmap[e]
+                            cityid = c[:3].upper()
+                            items = query(evid, cityid, t_start, t_end)
+                            addLog(sender_id, "ACTION", "QUERY::" + text, 0)
+                            qparams = {
+                                'city': cityid,
+                                'evtype': evid,
+                                'start': t_start,
+                                'end': t_end
+                            }
+                            event_presenter(sender_id=sender_id,
+                                            items=items,
+                                            send=True,
+                                            qparams=qparams
+                                            )
     else:
-        m = sender.gen_text_message(res['reply'])
+        reply = res['reply']
+        if reply == 'Please add a date or a time period.':
+            options = ['Next week', 'Next month', 'This month']
+            m = sender.opt_select(reply, options)
+        elif reply == 'Where would you like to search for the same ?':
+            options = ['Bangalore', 'Chennai', 'Delhi',
+                       'Gurgaon',  'Hyderabad', 'Mumbai', 'Pune', 'Online']
+            m = sender.opt_select(reply, options)
+        elif reply == 'What kind of event are you looking for ?':
+            options = ['Hackathons', 'Developer Meets', 'Contests']
+            m = sender.opt_select(reply, options)
+        else:
+            m = sender.gen_text_message(reply)
+        addLog(sender_id, "TEXT", "MIDQUERY::" + reply, 0)
         post_facebook_message(sender_id, m)
         return
 
@@ -389,68 +447,6 @@ class BotView(generic.View):
                         else:
                             whattodo(sender_id, content)
                             return HttpResponse()
-                            """
-                            if type(message) == type(u""):
-
-                            else:
-                                if "search_parameter" in message:
-                                    date = message["date"]
-                                    print(date)
-                                    if len(date.strip()) == 0:
-                                        # StartDate = "12/17/2018"
-                                        # chalu_date = StartDate.split("/")
-                                        # dt = datetime.datetime(
-                                        #     chalu_date[-1], chalu_date[0], chalu_date[1])
-                                        # epochs = (
-                                        #     dt - datetime.datetime(1970, 1, 1, 0, 0)).total_seconds() + 30 * 24 * 60 * 60
-                                        epoch = 1517298807
-                                        # date = Date.today() + timedelta(days=30)
-                                        # print(chalu_date)
-                                    else:
-                                        chalu_date = date.split("-")
-                                        epoch = (datetime.datetime(
-                                            int(chalu_date[0]), int(
-                                                chalu_date[1]), int(chalu_date[2]), 0,
-                                            0) - datetime.datetime(1970, 1, 1)).total_seconds()
-                                    items = query(
-                                        event=message["search_parameter"], city=message["location"], epoch_end=epoch)[:5]
-                                    if len(items) == 0:
-                                        m = sender.gen_text_message(
-                                            "Sorry, we could not find any data for your query")
-                                        post_facebook_message(sender_id, m)
-                                    else:
-                                        print items
-                                        details_list = []
-                                        for ev in items[:10]:
-                                            details_dict = {}
-                                            details_dict['title'] = ev['name']
-                                            details_dict['image_url'] = DEFAULT_URL
-                                            details_dict['subtitle'] = 'By : ' + \
-                                                                       ev['by'] + "\n" + \
-                                                ev['description']
-                                            details_dict['url'] = ev['link']
-                                            details_dict['button_text'] = "Open"
-                                            details_dict['button_url'] = ev['link']
-                                            details_list.append(details_dict)
-                                            print(details_dict)
-                                        m = sender.gen_link_cards(details_list)
-                                        post_facebook_message(sender_id, m)
-
-
-                                        VISHAL BHAI IDHAR DEKH
-
-                                elif "hashtag" in message:
-                                    hashtag = message["hashtag"]
-                                    email = message["email"]
-                                    #
-                                    r = Report(email, hashtag)
-                                    m = sender.gen_text_message(
-                                        "Your request has been recorded, It might take a while to fullfill it based on the number of tweets")
-                                    post_facebook_message(
-                                        sender_id, m)
-                                    # r.process(hashtag)
-                                """
-
                     '''
                     # pprint(data)'''
 
@@ -472,67 +468,3 @@ class SheetsPingView(generic.View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return generic.View.dispatch(self, request, *args, **kwargs)
-
-    # # Post function to handle Facebook messages
-    # def post(self, request, *args, **kwargs):
-    #     incoming_message = json.loads(self.request.body.decode('utf-8'))
-    #     pprint(incoming_message)
-    #
-    #     date = incoming_message[5]
-    #     dt = pd.Timestamp(date).astimezone('Asia/Kolkata').to_pydatetime()
-    #     datestring = str(dt.year) + '-' + str(dt.month) + '-' + str(dt.day)
-    #     epochs = int(dt.strftime('%s'))
-    #
-    #     details_dict = {}
-    #     details_dict['title'] = incoming_message[1]
-    #     details_dict['image_url'] = DEFAULT_URL
-    #     details_dict['subtitle'] = 'By : ' + \
-    #         incoming_message[-1] + "\n" + incoming_message[2]
-    #     details_dict['url'] = incoming_message[4]
-    #     details_dict['button_text'] = "Open"
-    #     details_dict['button_url'] = incoming_message[4]
-    #
-    #     event_dict = {
-    #         'by': incoming_message[-1],
-    #         'date': datestring,
-    #         'description': incoming_message[2],
-    #         'epoch': epochs,
-    #         'link': details_dict['url'],
-    #         'name': details_dict['title'],
-    #     }
-    #     add_event(category=incoming_message[3],
-    #               event=incoming_message[-2],
-    #               city=incoming_message[-3],
-    #               event_dict=event_dict,
-    #               id=binascii.hexlify(os.urandom(8))
-    #               )
-    #     print "EVENT WAS ADDED"
-    #
-    #     m = createBroadcast(mtype="template", title=details_dict['title'], image_url=DEFAULT_URL,
-    #                         subtitle=details_dict["subtitle"], url=details_dict["url"], button_text="Interested")
-    #     sendTargetBroadcast(msgID=m, lid=labmap[incoming_message[3]])
-
-        # m = sender.gen_link_cards([details_dict])
-        # post_facebook_message(1645332865512512, m)
-
-        return HttpResponse()
-
-
-""""
-curl -X POST -H "Content-Type: application/json" -d '{
-    "greeting": [
-        {
-            "locale": "de   fault",
-            "text": "Up to Speed. At Lightning speed."
-        }
-    ],
-    "get_started": {"payload": "GET_STARTED_PAYLOAD"}
-}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAACSTXh23oABAGwu2YLuZBUC68XZAsmOOZAaCDp4kRinhZAxPkpZBuZARko78E8jFoABfjSV3BUpv2BPEGE5E0sXiKhxCAy7lehLQYbDfIICKQzVSoEONrKgAyprLvyQ9t4teqQ5JClZC3vWMzgRaTKL8F2UYOKE3siNaQ6W5xBsAZDZD"
-"""
-
-# To Set GetStarted button"""
-"""
-    curl -X POST -H "Content-Type: application/json" -d '{
-        "get_started": {"payload": "GET_STARTED_PAYLOAD"}
-    }' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAACSTXh23oABAGwu2YLuZBUC68XZAsmOOZAaCDp4kRinhZAxPkpZBuZARko78E8jFoABfjSV3BUpv2BPEGE5E0sXiKhxCAy7lehLQYbDfIICKQzVSoEONrKgAyprLvyQ9t4teqQ5JClZC3vWMzgRaTKL8F2UYOKE3siNaQ6W5xBsAZDZD"
-"""

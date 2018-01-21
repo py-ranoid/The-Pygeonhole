@@ -150,10 +150,11 @@ def opt_select(text, opts):
         quickies.append({
             "content_type": "text",
             "title": i,
+            "payload": "DEVELOPER_DEFINED_PAYLOAD"
         })
     return {
         "text": text,
-        "quick_replies": quickies
+        "quick_replies": quickies,
     }
 
 

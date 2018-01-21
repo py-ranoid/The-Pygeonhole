@@ -47,7 +47,7 @@ def debug_task(self):
 app.conf.beat_schedule = {
     'scrape-every-24-hours': {
         'task': 'nightswatch',
-        'schedule': crontab(minute=0, hour=3),
+        'schedule': crontab(minute=0, hour=4),
         'args': ()
     },
     'checker': {
